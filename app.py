@@ -24,7 +24,6 @@ from flask import (
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_, desc
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.utils import secure_filename
 
 from data import BodyPart
 from movenet import Movenet
@@ -48,6 +47,9 @@ class_names = [
     "Warrior I",
 ]
 
+label = ""
+model_name = ""
+
 list_dir = [
     "./avatars",
     "./models",
@@ -56,10 +58,7 @@ list_dir = [
 for d in list_dir:
     if not os.path.exists(os.path.join("static", d)):
         os.makedirs(os.path.join("static", d))
-
-label = ""
-model_name = ""
-
+        
 app.config["UPLOAD_FOLDER"] = os.path.join("static", "uploaded")
 app.config["UPLOAD_MODEL"] = os.path.join("static", "models")
 app.config["UPLOADED_PHOTOS_DEST"] = os.path.join("static", "avatars")
@@ -670,13 +669,19 @@ def admin_add_model():
 def delete_model(model_id):
     if session["role"] in ["Admin"]:
         mod = Models.query.get(model_id)
-        os.remove(mod.location_h5)
-        os.remove(mod.location_json)
-        db.session.delete(mod)
-        db.session.commit()
+        uploads = mod.upload
+        if uploads:
+            flash('Cannot delete model, model is being used', 'warning')
+            mod = Models.query.all()
+            return render_template("admin_model.html", listModel=mod)
+        else:
+            os.remove(mod.location_h5)
+            os.remove(mod.location_json)
+            db.session.delete(mod)
+            db.session.commit()
 
-        mod = Models.query.all()
-        return render_template("admin_model.html", listModel=mod)
+            mod = Models.query.all()
+            return render_template("admin_model.html", listModel=mod)
 
 
 @app.route("/model")

@@ -13,7 +13,6 @@
     $("#btn_upload").click(function(){
       // Thêm thông báo và spinner vào một phần tử div có id là "processing"
       $("form").append('<h4 id="processing" class="fw-semibold mt-4">The system is processing, please wait a moment!</h4>');
-
       // Thêm các spinner vào phần tử có id là "processing"
       var spinnerHtml = '<div class="demo-inline-spacing">';
       spinnerHtml += '<div class="spinner-grow" role="status"><span class="visually-hidden">Loading...</span></div>';
@@ -22,6 +21,7 @@
       spinnerHtml += '<div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
       spinnerHtml += '</div>';
       $("#processing").append(spinnerHtml);
+
     });
   });
 </script>

@@ -12,66 +12,70 @@
     <span class="text-muted fw-light">User /</span>
     Add User
   </h4>
+  <div class="row d-flex justify-content-center">
+    <div class="col-xl-12">
+      <form id="formAuthentication" class="mb-3" action="" method="POST" enctype='multipart/form-data'>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+            placeholder="Enter your username"
+            autofocus
+          />
+      </div>
+      
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" />
+      </div>
+      
+      <div class="mb-3 form-password-toggle">
+        <label class="form-label" for="password">Password</label>
+        <div class="input-group input-group-merge">
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            name="password"
+            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+            aria-describedby="password"
+          />
+          <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+        </div>
+      </div>
+      
+      <div class="mb-3 form-password-toggle">
+        <label class="form-label" for="password">Pre-password</label>
+        <div class="input-group input-group-merge">
+          <input
+            type="password"
+            id="prepassword"
+            class="form-control"
+            name="prepassword"
+            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+            aria-describedby="password"
+          />
+          <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="formFile" class="form-label">Avatar</label>
+        <input type="file" id="fileInput" name="avatar" class="form-control">
+        <div id="message"></div>
+      </div>
+      
+      <div class="mb-3">
+        <button id="uploadButton" class="btn btn-primary" type="submit" name="submit">Add User</button>
+      </div>
+      
+      </form>
+    </div>
+  </div>
 
-  <form id="formAuthentication" class="mb-3" action="" method="POST" enctype='multipart/form-data'>
-    <div class="mb-3">
-      <label for="username" class="form-label">Username</label>
-      <input
-        type="text"
-        class="form-control"
-        id="username"
-        name="username"
-        placeholder="Enter your username"
-        autofocus
-      />
-  </div>
-  
-  <div class="mb-3">
-    <label for="email" class="form-label">Email</label>
-    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" />
-  </div>
-  
-  <div class="mb-3 form-password-toggle">
-    <label class="form-label" for="password">Password</label>
-    <div class="input-group input-group-merge">
-      <input
-        type="password"
-        id="password"
-        class="form-control"
-        name="password"
-        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-        aria-describedby="password"
-      />
-      <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-    </div>
-  </div>
-  
-  <div class="mb-3 form-password-toggle">
-    <label class="form-label" for="password">Pre-password</label>
-    <div class="input-group input-group-merge">
-      <input
-        type="password"
-        id="prepassword"
-        class="form-control"
-        name="prepassword"
-        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-        aria-describedby="password"
-      />
-      <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-    </div>
-  </div>
-  
-  <div class="mb-3">
-    <label for="formFile" class="form-label">Avatar</label>
-    <input type="file" id="fileInput" name="avatar" class="form-control">
-    <div id="message"></div>
-  </div>
-  
-  <div class="mb-3">
-    <button id="uploadButton" class="btn btn-primary" type="submit" name="submit">Add User</button>
-  </div>
-  
-  </form>
 </div>
 
 

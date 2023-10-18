@@ -13,7 +13,16 @@
     <span class="text-muted fw-light">Model /</span>
     All Model
   </h4>
-
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
   {% if session['role'] == 'Admin' %}
   <form action="{{ url_for('add_model') }}" class="mb-3">
     <button type="submit" class="btn btn-primary">
@@ -28,6 +37,7 @@
           <tr>
             <th>Model Name</th>
             <th>Train Acurracy</th>
+            <th>Validation Acurracy</th>
             <th>Test Acurracy</th>
             <th>Actions</th>
           </tr>
@@ -42,8 +52,11 @@
                 {{model.train_acc}}
             </td>
             <td>
-                {{model.test_acc}}
+                {{model.val_acc}}
             </td>
+            <td>
+              {{model.test_acc}}
+          </td>
             <td>
               <div class="row align-items-center">
                 <form action="{{ url_for('select_model', model_id=model.id) }}" method="post" class="col p-0 ">
