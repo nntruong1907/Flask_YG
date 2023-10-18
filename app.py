@@ -48,6 +48,15 @@ class_names = [
     "Warrior I",
 ]
 
+list_dir = [
+    "./avatars",
+    "./models",
+    "./uploaded",
+]
+for d in list_dir:
+    if not os.path.exists(os.path.join("static", d)):
+        os.makedirs(os.path.join("static", d))
+
 label = ""
 model_name = ""
 
