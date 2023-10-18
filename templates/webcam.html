@@ -1,0 +1,22 @@
+{% extends "layout/layout.html" %}
+
+{% block title%}Yoga Pose Recognition | Webcam {% endblock %}
+
+{% block active_webcam %}
+  <li class="menu-item active">
+{% endblock %}
+
+{% block navbar %}
+
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid flex-grow-1 container-p-y">
+  <div class="layout-demo-wrapper">
+    <div class="layout-demo-placeholder">
+      <img class="img-fluid" src="{{ url_for('webcam_feed') }}" alt="Webcam">
+    </div>
+  </div>
+</div>
+
+{% endblock %}

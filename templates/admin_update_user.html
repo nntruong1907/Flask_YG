@@ -1,0 +1,140 @@
+{% extends "layout/layout.html" %}
+
+{% block title%}Yoga Pose Recognition | Upload User {% endblock %}
+
+{% block active_user %}
+  <li class="menu-item active">
+{% endblock %}
+
+{% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">User /</span>
+    Upload User
+  </h4>
+
+  <form id="formAuthentication" class="mb-3" action="" method="POST" enctype='multipart/form-data'>
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        name="username"
+        placeholder="Enter your username"
+        autofocus
+        value="{{ user.username }}"
+      />
+  </div>
+  
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" />
+  </div>
+  
+  <div class="mb-3 form-password-toggle">
+    <label class="form-label" for="password">Password</label>
+    <div class="input-group input-group-merge">
+      <input
+        type="password"
+        id="password"
+        class="form-control"
+        name="password"
+        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+        aria-describedby="password"
+      />
+      <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+    </div>
+  </div>
+  
+  <div class="mb-3 form-password-toggle">
+    <label class="form-label" for="password">Pre-password</label>
+    <div class="input-group input-group-merge">
+      <input
+        type="password"
+        id="prepassword"
+        class="form-control"
+        name="prepassword"
+        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+        aria-describedby="password"
+      />
+      <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+    </div>
+  </div>
+  
+  <div class="mb-3">
+    <label for="formFile" class="form-label">Avatar</label>
+    <input type="file" id="fileInput" name="avatar" class="form-control">
+    <div id="message"></div>
+  </div>
+  
+  <div class="mb-3">
+    <button id="uploadButton" class="btn btn-primary" type="submit" name="submit">Update User</button>
+  </div>
+  
+  </form>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#formAuthentication").validate({
+            rules: {
+                username: {required: true},
+                email: {required: true, email: true},
+                password: {required: true, minlength: 5},
+                prepassword: {required: true, minlength: 5, equalTo: "#password"},
+                avatar: {required: true, extension: "jpeg|jpg|png"},
+
+            },
+            messages: {
+                username: "Bạn chưa nhập vào tên đăng nhập của bạn",
+                email: "Hộp thư điện tử không hợp lệ",
+                password: {
+                    required: "Bạn chưa nhập mật khẩu",
+                    minlength: "Mật khẩu phải có ít nhất 5 ký tự"
+                },
+                prepassword: {
+                    required: "Bạn chưa nhập mật khẩu",
+                    minlength: "Mật khẩu phải có ít nhất 5 ký tự",
+                    equalTo: "Mật khẩu không khớp"
+                },
+                avatar: {
+                    required: "Chưa chọn ảnh đại diện"
+                }
+            },
+            errorElement: "div",
+            errorPlacement: function(error, element) {
+                error.addClass("invalid-feedback");
+                error.insertBefore(element);
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).addClass("is-valid").removeClass("is-invalid");
+            }
+        });
+    });
+</script>
+
+<!-- <script>
+  document.getElementById('uploadButton').addEventListener('click', function () {
+      var fileInput = document.getElementById('fileInput');
+      var file = fileInput.files[0];
+
+      var formData = new FormData();
+      formData.append('avatar', file);
+      
+      fetch('/upload_avt', {
+          method: 'POST',
+          body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+          document.getElementById('message').innerText = data.message || data.error;
+      });
+  });
+</script> -->
+
+{% endblock %}

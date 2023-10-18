@@ -1,0 +1,54 @@
+{% extends "layout/layout.html" %}
+
+{% block title%}Yoga Pose Recognition | Upload {% endblock %}
+
+{% block active_upload %}
+  <li class="menu-item active">
+{% endblock %}
+
+{% block content %}
+
+<script>
+  $(document).ready(function(){
+    $("#btn_upload").click(function(){
+      // Thêm thông báo và spinner vào một phần tử div có id là "processing"
+      $("form").append('<h4 id="processing" class="fw-semibold mt-4">The system is processing, please wait a moment!</h4>');
+
+      // Thêm các spinner vào phần tử có id là "processing"
+      var spinnerHtml = '<div class="demo-inline-spacing">';
+      spinnerHtml += '<div class="spinner-grow" role="status"><span class="visually-hidden">Loading...</span></div>';
+      spinnerHtml += '<div class="spinner-grow text-light" role="status"><span class="visually-hidden">Loading...</span></div>';
+      spinnerHtml += '<div class="spinner-grow text-secondary" role="status"><span class="visually-hidden">Loading...</span></div>';
+      spinnerHtml += '<div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
+      spinnerHtml += '</div>';
+      $("#processing").append(spinnerHtml);
+    });
+  });
+</script>
+
+
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">Upload /</span>
+    Image and Video
+  </h4>
+  <form id="formUpload" method="POST" action="{{ url_for('upload_file') }}" enctype='multipart/form-data'>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <input type='file' class="form-control mt-2 " name="file" accept=".mp4, .jpg, .jpeg, .png" />
+    <button id="btn_upload" type="submit" class="btn btn-primary mt-4">
+      <span class="tf-icons bx bx-upload"></span>&nbsp; Upload
+    </button>
+  </form>
+
+</div>
+
+{% endblock %}

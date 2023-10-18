@@ -1,0 +1,39 @@
+{% extends "layout/layout_auth.html" %}
+
+{% block form_js %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#formAuthentication").validate({
+            rules: {
+                email_username: {required: true},
+                password: {required: true, minlength: 5},
+
+            },
+            messages: {
+                email_username: "Bạn chưa nhập tên đăng nhập/email của bạn",
+                password: {
+                    required: "Bạn chưa nhập mật khẩu",
+                    minlength: "Mật khẩu phải có ít nhất 5 ký tự"
+                },
+            },
+            errorElement: "div",
+            errorPlacement: function(error, element) {
+                error.addClass("invalid-feedback");
+                error.insertBefore(element);
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).addClass("is-valid").removeClass("is-invalid");
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function(){
+        $('#remember-me').click();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "layout/layout.html" %}
+
+{% block title%}Yoga Pose Recognition | Model {% endblock %}
+
+{% block active_model %}
+  <li class="menu-item active">
+{% endblock %}
+
+
+{% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">Model /</span>
+    All Model
+  </h4>
+
+  {% if session['role'] == 'Admin' %}
+  <form action="{{ url_for('add_model') }}" class="mb-3">
+    <button type="submit" class="btn btn-primary">
+      <i class="bx bx-user-plus me-2"></i> Add Model</button>
+  </form>
+  {% endif %}
+  <!-- Hoverable Table rows -->
+  <div class="card">
+    <div class="table-responsive text-nowrap">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Model Name</th>
+            <th>Train Acurracy</th>
+            <th>Test Acurracy</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          {% for model in listModel %}
+          <tr>
+            <td>
+              {{model.modelname}}
+            </td>
+            <td>
+                {{model.train_acc}}
+            </td>
+            <td>
+                {{model.test_acc}}
+            </td>
+            <td>
+              <div class="row align-items-center">
+                <form action="{{ url_for('select_model', model_id=model.id) }}" method="post" class="col p-0 ">
+                  {% if model.selected == 'No' %}
+                  <button type="submit" class="btn btn-outline-success">
+                    <i class="bx bx-edit-alt me-1"></i> Select</button>
+                  {% else %}
+                  <button type="submit" class="btn btn-outline-success" disabled>
+                    <i class="bx bx-edit-alt me-1"></i> Selected</button>
+                  {% endif %}
+                </form>
+              {% if session['role'] == 'Admin' %}
+                <form action="{{ url_for('delete_model', model_id=model.id) }}" method="post" class="col p-0">
+                  {% if model.selected == 'No' %}
+                  <button type="submit" class="btn btn-outline-danger">
+                    <i class="bx bx-trash me-1"></i>Delete</button>
+                  {% else %}
+                  <button type="submit" class="btn btn-outline-danger" disabled>
+                    <i class="bx bx-trash me-1"></i>Delete</button>
+                  {% endif %}
+                </form>
+              {% endif %}
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!--/ Hoverable Table rows -->
+</div>
+
+{% endblock %}

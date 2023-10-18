@@ -1,0 +1,10 @@
+numpy
+pandas
+tensorflow
+matplotlib
+opencv-python
+scikit-learn
+psutil
+Flask
+flask_sqlalchemy
+flask-admin

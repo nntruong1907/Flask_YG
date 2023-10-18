@@ -1,0 +1,75 @@
+{% extends "layout/layout.html" %}
+
+{% block title%}Yoga Pose Recognition | History {% endblock %}
+
+{% block active_history %}
+  <li class="menu-item active">
+{% endblock %}
+
+
+{% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">History /</span>
+    Image and Video
+  </h4>
+  <!-- Hoverable Table rows -->
+  <div class="card">
+    <h5 class="card-header">{{ session['user_name'] }}</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>File Name</th>
+            <th>Time</th>
+            <th>Model</th>
+            <th>Result</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          {% for upload in listUpload %}
+          <tr>
+            <td>
+                {{upload.location}}
+            </td>
+            <td>
+                {{upload.time}}
+            </td>
+            <td>
+              {{upload.model.modelname}}
+            </td>
+            <td>
+                {{upload.result}}
+            </td>
+            <td>
+              <div class="row align-items-center">
+                <form action="{{ url_for('play_upload', upload_id=upload.id) }}" method="post" class="col p-0 ">
+                  <button type="submit" class="btn btn-outline-success">
+                    {% set type_file = upload.location %}
+                    {% set image_extensions = ["jpg", "jpeg", "png", "gif"] %}
+                    {% set video_extensions = ["mp4", "mov", "avi"] %}
+                    {% set f_name, f_extension = type_file.rsplit(".", 1) %}
+                    {% if (f_extension in image_extensions): %}
+                    <i class="bx bx-eye me-1"></i> View </button>
+                    {% else %}
+                    <i class="bx bx-play me-1"></i> Play</button>
+                    {% endif %}
+                </form>
+                <form action="{{ url_for('delete_upload', upload_id=upload.id) }}" method="post" class="col p-0">
+                  <button type="submit" class="btn btn-outline-danger">
+                    <i class="bx bx-trash me-1"></i>Delete</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!--/ Hoverable Table rows -->
+</div>
+
+{% endblock %}

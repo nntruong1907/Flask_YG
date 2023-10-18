@@ -1,0 +1,104 @@
+{% extends "layout/layout.html" %}
+
+{% block title%}Yoga Pose Recognition | Add Model {% endblock %}
+
+{% block active_model %}
+  <li class="menu-item active">
+{% endblock %}
+
+{% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">Model /</span>
+    Add Model
+  </h4>
+
+  <form id="formAuthentication" class="mb-3" action="" method="POST" enctype='multipart/form-data'>
+    <div class="mb-3">
+      <label for="modelname" class="form-label">Model name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="modelname"
+        name="modelname"
+        placeholder="Enter your model name"
+        autofocus
+      />
+  </div>
+  
+  <div class="mb-3">
+    <label for="text" class="form-label">Train Acurracy</label>
+    <input type="text" class="form-control" id="train_acc" name="train_acc" placeholder="Enter your train acurracy" />
+  </div>
+
+  <div class="mb-3">
+    <label for="text" class="form-label">Test Acurracy</label>
+    <input type="text" class="form-control" id="test_acc" name="test_acc" placeholder="Enter your test acurracy" />
+  </div>
+  
+  <div class="mb-3">
+    <label for="formFile" class="form-label">File .h5</label>
+    <input type="file" id="fileH5Input" name="file_h5" class="form-control">
+  </div>
+
+  <div class="mb-3">
+    <label for="formFile" class="form-label">File .json</label>
+    <input type="file" id="fileJsonInput" name="file_json" class="form-control">
+  </div>
+  
+  <div class="mb-3">
+    <button id="uploadButton" class="btn btn-primary" type="submit" name="submit">Add Model</button>
+  </div>
+  
+  </form>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#formAuthentication").validate({
+            rules: {
+                modelname: {required: true},
+                train_acc: {required: true},
+                test_acc: {required: true},
+            },
+            messages: {
+                modelname: "Bạn chưa nhập vào tên mô hình của bạn",
+                train_acc: "Bạn chưa nhập vào độ chính xác trên tập train",
+                test_acc: "Bạn chưa nhập vào độ chính xác trên tập test",
+            },
+            errorElement: "div",
+            errorPlacement: function(error, element) {
+                error.addClass("invalid-feedback");
+                error.insertBefore(element);
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).addClass("is-valid").removeClass("is-invalid");
+            }
+        });
+    });
+</script>
+
+<!-- <script>
+  document.getElementById('uploadButton').addEventListener('click', function () {
+      var fileInput = document.getElementById('fileInput');
+      var file = fileInput.files[0];
+
+      var formData = new FormData();
+      formData.append('avatar', file);
+      
+      fetch('/upload_avt', {
+          method: 'POST',
+          body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+          document.getElementById('message').innerText = data.message || data.error;
+      });
+  });
+</script> -->
+
+{% endblock %}
