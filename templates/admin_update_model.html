@@ -1,6 +1,6 @@
 {% extends "layout/layout.html" %}
 
-{% block title%}Yoga Pose Recognition | Add Model {% endblock %}
+{% block title%}Yoga Pose Recognition | Update Model {% endblock %}
 
 {% block active_model %}
   <li class="menu-item active">
@@ -10,10 +10,10 @@
 <div class="container-xxl flex-grow-1 container-p-y">
   <h4 class="fw-bold py-3 mb-4">
     <span class="text-muted fw-light">Model /</span>
-    Add Model
+    Update Model
   </h4>
 
-  <form id="formAuthentication" class="mb-3" action="" method="POST" enctype='multipart/form-data'>
+  <form id="formAuthentication" class="mb-3" action="{{ url_for('admin_update_model', model_id=mod.id) }}" method="POST" enctype='multipart/form-data'>
     <div class="mb-3">
       <label for="modelname" class="form-label">Model name</label>
       <input
@@ -23,22 +23,23 @@
         name="modelname"
         placeholder="Enter your model name"
         autofocus
+        value="{{ mod.modelname }}"
       />
   </div>
   
   <div class="mb-3">
     <label for="text" class="form-label">Train Acurracy</label>
-    <input type="text" class="form-control" id="train_acc" name="train_acc" placeholder="Enter your train acurracy" />
+    <input type="text" class="form-control" id="train_acc" name="train_acc" placeholder="Enter your train acurracy" value="{{ mod.train_acc }}" />
   </div>
 
   <div class="mb-3">
     <label for="text" class="form-label">Validation Acurracy</label>
-    <input type="text" class="form-control" id="val_acc" name="val_acc" placeholder="Enter your validation acurracy" />
+    <input type="text" class="form-control" id="val_acc" name="val_acc" placeholder="Enter your validation acurracy" value="{{ mod.val_acc }}"/>
   </div>
 
   <div class="mb-3">
     <label for="text" class="form-label">Test Acurracy</label>
-    <input type="text" class="form-control" id="test_acc" name="test_acc" placeholder="Enter your test acurracy" />
+    <input type="text" class="form-control" id="test_acc" name="test_acc" placeholder="Enter your test acurracy" value="{{ mod.test_acc }}"/>
   </div>
   
   <div class="mb-3">
@@ -57,7 +58,6 @@
   
   </form>
 </div>
-
 
 <script type="text/javascript">
     $(document).ready(function(){

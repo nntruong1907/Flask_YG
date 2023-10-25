@@ -172,28 +172,34 @@ def find_newest_model_with_prefix(folder_path, prefix):
     )
     # print(name_without_extension)
     name_without_extension = latest_file.rsplit(".", 1)[0]
-    # print(latest_file)
 
     return name_without_extension
 
-
-def load_model(model_name):
-    # newest_model = find_newest_model_with_prefix("models", model_name)
-    newest_model = find_newest_model_with_prefix("static/models", model_name)
-    if model_name not in ["svm"]:
-        # json_file = open("models/" + newest_model + ".json", "r")
-        json_file = open("static/models/" + newest_model + ".json", "r")
-        loaded_model_json = json_file.read()
-        json_file.close()
-        model = model_from_json(loaded_model_json)
-        # model.load_weights("models/" + newest_model + ".h5")
-        model.load_weights("static/models/" + newest_model + ".h5")
-    else:
-        # with open(f"models/{newest_model}.pkl", "rb") as model_file:
-        with open(f"static/models/{newest_model}.pkl", "rb") as model_file:
-            model = pickle.load(model_file)
+def load_model(location_h5, location_json):
+    json_file = open(location_json , "r")
+    loaded_model_json = json_file.read()
+    model = model_from_json(loaded_model_json)
+    model.load_weights(location_h5)
 
     return model
+
+# def load_model(model_name):
+#     # newest_model = find_newest_model_with_prefix("models", model_name)
+#     newest_model = find_newest_model_with_prefix("static/models", model_name)
+#     if model_name not in ["svm"]:
+#         # json_file = open("models/" + newest_model + ".json", "r")
+#         json_file = open("static/models/" + newest_model + ".json", "r")
+#         loaded_model_json = json_file.read()
+#         json_file.close()
+#         model = model_from_json(loaded_model_json)
+#         # model.load_weights("models/" + newest_model + ".h5")
+#         model.load_weights("static/models/" + newest_model + ".h5")
+#     else:
+#         # with open(f"models/{newest_model}.pkl", "rb") as model_file:
+#         with open(f"static/models/{newest_model}.pkl", "rb") as model_file:
+#             model = pickle.load(model_file)
+
+#     return model
 
 
 def detect(input_tensor, inference_count=3):
@@ -500,7 +506,7 @@ def upload():
             if mod:
                 model_name = mod.modelname
                 mod_id = mod.id
-                model = load_model(model_name)
+                model = load_model(mod.location_h5, mod.location_json)
             else:
                 flash("Please select model", "warning")
                 mod = Models.query.all()
@@ -665,6 +671,48 @@ def admin_add_model():
         return render_template("admin_model.html", listModel=mod)
 
 
+@app.route("/admin/model_<int:model_id>", methods=["GET", "POST"])
+def update_model(model_id):
+    if session["role"] in ["Admin"]:
+        mod = Models.query.get(model_id)
+        return render_template("admin_update_model.html", mod=mod)
+
+
+@app.route("/admin/update_model/<int:model_id>", methods=["GET", "POST"])
+def admin_update_model(model_id):
+    if session["role"] in ["Admin"]:
+        mod = Models.query.get(model_id)
+        if request.method == "POST":
+            t = datetime.now()
+            t = t.strftime("%H%M%S")
+            if "file_h5" in request.files and request.files["file_h5"]:
+                f_h5 = request.files["file_h5"]
+                file_h5 = f_h5.filename
+                f_name_h5, f_extension_h5 = file_h5.rsplit(".", 1)
+                file_name_h5 = f"{f_name_h5}_{t}.{f_extension_h5}"
+                path_h5 = os.path.join(app.config["UPLOAD_MODEL"], file_name_h5)
+                f_h5.save(path_h5)
+                mod.location_h5 = path_h5
+            if "file_json" in request.files and request.files["file_json"]:
+                f_json = request.files["file_json"]
+                file_json = f_json.filename
+                f_name_json, f_extension_json = file_json.rsplit(".", 1)
+                file_name_json = f"{f_name_json}_{t}.{f_extension_json}"
+                path_json = os.path.join(app.config["UPLOAD_MODEL"], file_name_json)
+                f_json.save(path_json)
+                mod.location_json = path_json
+
+            mod.modelname = request.form["modelname"]
+            mod.train_acc = request.form["train_acc"]
+            mod.val_acc = request.form["val_acc"]
+            mod.test_acc = request.form["test_acc"]
+        
+            db.session.commit()
+
+            mod = Models.query.all()
+            return render_template("admin_model.html", listModel=mod)
+
+
 @app.route("/admin/delete_model/<int:model_id>", methods=["POST"])
 def delete_model(model_id):
     if session["role"] in ["Admin"]:
@@ -704,7 +752,7 @@ def select_model(model_id):
     model_name = mod.modelname
     db.session.commit()
 
-    model = load_model(model_name)
+    model = load_model(mod.location_h5, mod.location_json)
 
     mod = Models.query.all()
     return render_template("admin_model.html", listModel=mod)
@@ -769,7 +817,7 @@ def delete_user(user_id):
         return render_template("admin_user.html", listUser=user)
 
 
-@app.route("/admin/<int:user_id>", methods=["GET", "POST"])
+@app.route("/admin/user_<int:user_id>", methods=["GET", "POST"])
 def update_user(user_id):
     if session["role"] in ["Admin"]:
         user = User.query.get(user_id)
@@ -786,8 +834,8 @@ def admin_update_user(user_id):
                     request.form["password"], method="pbkdf2:sha256"
                 )
                 user.password = hashed_password
-
-            if "avatar" in request.files:
+                
+            if "avatar" in request.files and request.files["avatar"]:
                 file = request.files["avatar"]
                 if file:
                     filename = file.filename

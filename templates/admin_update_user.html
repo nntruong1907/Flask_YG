@@ -1,6 +1,6 @@
 {% extends "layout/layout.html" %}
 
-{% block title%}Yoga Pose Recognition | Upload User {% endblock %}
+{% block title%}Yoga Pose Recognition | Update User {% endblock %}
 
 {% block active_user %}
   <li class="menu-item active">
@@ -10,10 +10,10 @@
 <div class="container-xxl flex-grow-1 container-p-y">
   <h4 class="fw-bold py-3 mb-4">
     <span class="text-muted fw-light">User /</span>
-    Upload User
+    Update User
   </h4>
 
-  <form id="formAuthentication" class="mb-3" action="" method="POST" enctype='multipart/form-data'>
+  <form id="formAuthentication" class="mb-3" action="{{ url_for('admin_update_user', user_id=user.id) }}" method="POST" enctype='multipart/form-data'>
     <div class="mb-3">
       <label for="username" class="form-label">Username</label>
       <input
@@ -82,26 +82,26 @@
             rules: {
                 username: {required: true},
                 email: {required: true, email: true},
-                password: {required: true, minlength: 5},
-                prepassword: {required: true, minlength: 5, equalTo: "#password"},
-                avatar: {required: true, extension: "jpeg|jpg|png"},
+                // password: {required: true, minlength: 5},
+                // prepassword: {required: true, minlength: 5, equalTo: "#password"},
+                // avatar: {required: true, extension: "jpeg|jpg|png"},
 
             },
             messages: {
                 username: "Bạn chưa nhập vào tên đăng nhập của bạn",
                 email: "Hộp thư điện tử không hợp lệ",
-                password: {
-                    required: "Bạn chưa nhập mật khẩu",
-                    minlength: "Mật khẩu phải có ít nhất 5 ký tự"
-                },
-                prepassword: {
-                    required: "Bạn chưa nhập mật khẩu",
-                    minlength: "Mật khẩu phải có ít nhất 5 ký tự",
-                    equalTo: "Mật khẩu không khớp"
-                },
-                avatar: {
-                    required: "Chưa chọn ảnh đại diện"
-                }
+                // password: {
+                //     required: "Bạn chưa nhập mật khẩu",
+                //     minlength: "Mật khẩu phải có ít nhất 5 ký tự"
+                // },
+                // prepassword: {
+                //     required: "Bạn chưa nhập mật khẩu",
+                //     minlength: "Mật khẩu phải có ít nhất 5 ký tự",
+                //     equalTo: "Mật khẩu không khớp"
+                // },
+                // avatar: {
+                //     required: "Chưa chọn ảnh đại diện"
+                // }
             },
             errorElement: "div",
             errorPlacement: function(error, element) {

@@ -62,19 +62,23 @@
                 <form action="{{ url_for('select_model', model_id=model.id) }}" method="post" class="col p-0 ">
                   {% if model.selected == 'No' %}
                   <button type="submit" class="btn btn-outline-success">
-                    <i class="bx bx-edit-alt me-1"></i> Select</button>
+                    <i class="bx bx-check-square me-1"></i> Select</button>
                   {% else %}
                   <button type="submit" class="btn btn-outline-success" disabled>
-                    <i class="bx bx-edit-alt me-1"></i> Selected</button>
+                    <i class="bx bxs-check-square me-1"></i> Selected</button>
                   {% endif %}
                 </form>
               {% if session['role'] == 'Admin' %}
-                <form action="{{ url_for('delete_model', model_id=model.id) }}" method="post" class="col p-0">
+                <form action="{{ url_for('update_model', model_id=model.id) }}" method="post" class="col p-0 ">
+                  <button type="submit" class="btn btn-outline-primary">
+                    <i class="bx bx-edit-alt me-1"></i> Update</button>
+                </form>
+                <form action="{{ url_for('delete_model', model_id=model.id) }}" method="post" class="col p-0" id="c_delete">
                   {% if model.selected == 'No' %}
-                  <button type="submit" class="btn btn-outline-danger">
+                  <button type="button" class="btn btn-outline-danger" id="confirmButton" onclick="xacNhanThucHien()">
                     <i class="bx bx-trash me-1"></i>Delete</button>
                   {% else %}
-                  <button type="submit" class="btn btn-outline-danger" disabled>
+                  <button type="button" class="btn btn-outline-danger" disabled>
                     <i class="bx bx-trash me-1"></i>Delete</button>
                   {% endif %}
                 </form>
@@ -90,5 +94,19 @@
   </div>
   <!--/ Hoverable Table rows -->
 </div>
+
+<script>
+  function xacNhanThucHien() {
+    var xacNhan = confirm("Are you sure you want to delete this model?");
+    if (xacNhan) {
+        // alert("Deleted successfully!");
+        // Nếu xác nhận, thực hiện hành động submit
+        document.getElementById("c_delete").submit();
+    } else {
+        // alert("The operation has been cancelled.");
+        // Nếu hủy, không thực hiện submit
+    }
+}
+</script>
 
 {% endblock %}
